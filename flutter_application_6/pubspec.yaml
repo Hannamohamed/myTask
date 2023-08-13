@@ -65,6 +65,10 @@ flutter:
    - images/down.jpg
    - images/download90.jpg
    - images/oo.png
+   - images/download10.jpg
+   - images/download8.jpg
+
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
