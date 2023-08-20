@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_6/NEW/question.dart';
 import 'package:flutter_application_6/main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SecPage extends StatelessWidget {
-  const SecPage({super.key});
+class SecPage extends StatefulWidget {
+  final int totalScore;
+  final int totalnumofquestions;
+  final TextEditingController userName;
+  SecPage(
+      {super.key,
+      required this.totalScore,
+      required this.totalnumofquestions,
+      required this.userName});
+  @override
+  State<SecPage> createState() => _SecPageState();
+}
+
+class _SecPageState extends State<SecPage> {
+  @override
+  void dispose() {
+    widget.userName.clear(); // Clear the controller
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,33 +32,31 @@ class SecPage extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.3,
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Center(
                 child: Text(
                   '  Hello ,',
                   style: GoogleFonts.pacifico(
                       textStyle: TextStyle(
-                          color: Color.fromRGBO(17, 17, 17, 1), fontSize: 50)),
+                          color: Color.fromRGBO(17, 17, 17, 1), fontSize: 40)),
                 ),
               ),
               Center(
                 child: Text(
-                  'Yasmin',
+                  '${userName.text}',
                   style: GoogleFonts.pacifico(
                       textStyle: TextStyle(
                           color: Color.fromRGBO(158, 19, 223, 1),
-                          fontSize: 50)),
+                          fontSize: 40)),
                 ),
               ),
             ],
           ),
           Center(
-            child: Text(
-              'Your Score 1/1',
-              style: GoogleFonts.pacifico(
-                  textStyle: TextStyle(
-                      color: Color.fromRGBO(17, 17, 17, 1), fontSize: 50)),
-            ),
+            child: Text('${widget.totalScore}/${widget.totalnumofquestions}',
+                style: TextStyle(
+                    color: Color.fromRGBO(17, 17, 17, 1), fontSize: 40)),
           ),
           SizedBox(height: 20),
           Center(
@@ -58,7 +74,7 @@ class SecPage extends StatelessWidget {
               child: Text(
                 'Reset quiz',
                 style: GoogleFonts.pacifico(
-                  textStyle: TextStyle(color: Color(0xFFDDD8D8), fontSize: 50),
+                  textStyle: TextStyle(color: Color(0xFFDDD8D8), fontSize: 40),
                 ),
               ),
             ),
