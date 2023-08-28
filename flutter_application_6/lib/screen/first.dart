@@ -14,7 +14,8 @@ class FirstPage extends StatefulWidget {
 class _FirstPageState extends State<FirstPage> {
   int index = 0;
   int totalScore = 0;
-
+  double _questionOpacity = 1.0;
+  double _choicesOpacity = 1.0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,62 +37,106 @@ class _FirstPageState extends State<FirstPage> {
           ],
         ),
       ),
-      body: Column(
+      body: Stack(
         children: [
-          SizedBox(height: 15),
-          Center(
-            child: Container(
-              width: double.infinity,
-              margin: EdgeInsets.all(15),
-              height: 130,
-              padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 48),
-              decoration: const BoxDecoration(
-                  color: Color.fromRGBO(236, 229, 229, 1),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20))),
-              child: Text(widget.categoryMap["data"][index]["question"],
-                  style: TextStyle(
-                      color: Color.fromRGBO(18, 18, 18, 1), fontSize: 20)),
-            ),
-          ),
-          for (int i = 0;
-              i < (widget.categoryMap["data"][index]["answers"] as List).length;
-              i++)
-            ElevatedButton(
-              onPressed: () {
-                totalScore = totalScore +
-                        widget.categoryMap["data"][index]["answers"][i]["score"]
-                    as int;
-                if (index + 1 < (widget.categoryMap["data"] as List).length) {
-                  setState(() {
-                    index++;
-                  });
-                } else {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) => SecPage(
-                        totalScore: totalScore,
-                        totalnumofquestions: index + 1,
-                        userName: userName,
-                      ),
-                    ),
-                  );
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                  primary: widget.categoryMap["color"]),
-              child: Text(
-                '${widget.categoryMap["data"][index]["answers"][i]["ans"]}',
-                style: TextStyle(
-                  color: Color.fromRGBO(18, 18, 18, 1),
-                  fontSize: 20,
+          Column(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
+              AnimatedOpacity(
+                opacity: _questionOpacity,
+                duration: Duration(milliseconds: 500),
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(30))),
+                  child: Text(
+                    widget.categoryMap["data"][index]["question"],
+                    style: GoogleFonts.pacifico(
+                        fontSize: 35, color: Colors.black),
+                  ),
                 ),
               ),
-            ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
+                 AnimatedOpacity(
+                opacity: _questionOpacity,
+                duration: Duration(milliseconds: 500),
+                child:
+              Text(
+                'Your choices is:',
+                style: GoogleFonts.pacifico(
+                    fontSize: 30,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+              ),),
+              for (int i = 0;
+                  i <
+                      (widget.categoryMap["data"][index]["answers"] as List)
+                          .length;
+                  i++)
+                AnimatedOpacity(
+                  opacity: _choicesOpacity,
+                  duration: Duration(milliseconds: 500),
+                  child: Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 10),
+                      width:200 ,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            widget.categoryMap["color"],
+                          ),
+                        ),
+                        onPressed: () {
+                          totalScore = totalScore +
+                              widget.categoryMap["data"][index]["answers"][i]
+                                  ["score"] as int;
+                          if (index + 1 <
+                              (widget.categoryMap["data"] as List).length) {
+                            setState(() {
+                              _questionOpacity = 0.0;
+                              _choicesOpacity = 0.0;
+                            });
+                            Future.delayed(Duration(milliseconds: 500), () {
+                              setState(() {
+                                index++;
+                                _questionOpacity = 1.0;
+                                _choicesOpacity = 1.0;
+                              });
+                            });
+                          } else {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (BuildContext context) => SecPage(
+                                  totalScore: totalScore,
+                                  totalnumofquestions: index + 1,
+                                  userName: userName,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        child: Text(
+                          (widget.categoryMap["data"][index]["answers"][i]
+                              ["ans"]),
+                          style: const TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ],
       ),
     );

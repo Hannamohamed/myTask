@@ -176,6 +176,7 @@ class LoginPage extends StatelessWidget {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text('Processing Data'),
+                                        duration: Duration(seconds: 1),
                                       ),
                                     );
                                     Navigator.push(

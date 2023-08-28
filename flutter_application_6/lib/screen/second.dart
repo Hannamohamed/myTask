@@ -48,7 +48,7 @@ class _SecPageState extends State<SecPage> {
                   style: GoogleFonts.pacifico(
                       textStyle: TextStyle(
                           color: Color.fromRGBO(158, 19, 223, 1),
-                          fontSize: 40)),
+                          fontSize: 18)),
                 ),
               ),
             ],
